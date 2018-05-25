@@ -22,6 +22,13 @@ public class Campeonato implements Serializable {
     private Integer ano;
 
 
+    public Campeonato(){}
+
+    public Campeonato(String nome, Integer ano){
+        this.nome = nome;
+        this.ano = ano;
+    }
+
     public Integer getId() {
         return id;
     }
