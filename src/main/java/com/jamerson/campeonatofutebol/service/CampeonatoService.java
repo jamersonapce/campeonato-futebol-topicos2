@@ -54,4 +54,9 @@ public class CampeonatoService {
         this.salva(campeonatoResult);
         return campeonatoResult;
     }
+
+    @Transactional
+    public void excluir(Integer id) {
+        campeonatoRepository.deleteById(id);
+    }
 }

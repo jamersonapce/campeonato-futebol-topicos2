@@ -4,6 +4,7 @@ package com.jamerson.campeonatofutebol.controller;
 import com.jamerson.campeonatofutebol.model.Campeonato;
 import com.jamerson.campeonatofutebol.service.CampeonatoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +28,6 @@ public class CampeonatoController {
 
     @GetMapping
     public ResponseEntity<?> lista(){
-
         List<Campeonato> campeonatos = campeonatoService.listaCampeonatos();
 
         if(campeonatos.isEmpty()){
@@ -40,7 +40,6 @@ public class CampeonatoController {
 
     @PostMapping
     public ResponseEntity<Void> cria(@Validated @RequestBody Campeonato campeonato){
-
         Campeonato campeonatoSalvo = campeonatoService.salva(campeonato);
 
         URI uri = ServletUriComponentsBuilder
@@ -64,5 +63,12 @@ public class CampeonatoController {
         Campeonato campeonatoResult = campeonatoService.atualiza(id, campeonato);
         return  ResponseEntity.ok(campeonatoResult);
 
+    }
+
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deletar(@PathVariable Integer id){
+        campeonatoService.excluir(id);
     }
 }
