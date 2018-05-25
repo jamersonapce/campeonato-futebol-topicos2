@@ -5,10 +5,11 @@ import com.jamerson.campeonatofutebol.model.Campeonato;
 import com.jamerson.campeonatofutebol.service.CampeonatoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -25,7 +26,7 @@ public class CampeonatoController {
 
 
     @GetMapping
-    public ResponseEntity<?> listaCampeonatos(){
+    public ResponseEntity<?> lista(){
 
         List<Campeonato> campeonatos = campeonatoService.listaCampeonatos();
 
@@ -34,5 +35,34 @@ public class CampeonatoController {
         } else {
             return ResponseEntity.ok(campeonatos);
         }
+    }
+
+
+    @PostMapping
+    public ResponseEntity<Void> cria(@Validated @RequestBody Campeonato campeonato){
+
+        Campeonato campeonatoSalvo = campeonatoService.salva(campeonato);
+
+        URI uri = ServletUriComponentsBuilder
+                .fromCurrentRequestUri()
+                .path("/{id}")
+                .buildAndExpand(campeonatoSalvo.getId())
+                .toUri();
+
+        return ResponseEntity.created(uri).build();
+    }
+
+
+    @GetMapping("/{id}")
+    public Campeonato buscaPor(@PathVariable Integer id){
+        return campeonatoService.buscaPor(id);
+    }
+
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Campeonato> atualiza(@PathVariable Integer id, @Validated @RequestBody Campeonato campeonato){
+        Campeonato campeonatoResult = campeonatoService.atualiza(id, campeonato);
+        return  ResponseEntity.ok(campeonatoResult);
+
     }
 }

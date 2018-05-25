@@ -2,6 +2,7 @@ package com.jamerson.campeonatofutebol.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -18,7 +19,7 @@ public class Campeonato implements Serializable {
     private String nome;
 
 
-    @NotBlank
+    @NotNull
     private Integer ano;
 
 
