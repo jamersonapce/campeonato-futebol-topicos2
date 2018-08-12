@@ -1,0 +1,19 @@
+CREATE TABLE IF NOT EXISTS campeonato (
+  id INT NOT NULL AUTO_INCREMENT,
+  nome VARCHAR(50) NOT NULL,
+  ano INT NOT NULL,
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS partida (
+  id INT(11) NOT NULL AUTO_INCREMENT,
+  data DATE NOT NULL,
+  pontuacao_mandante INT(11) NOT NULL DEFAULT 0,
+  pontuacao_visitante INT(11) NOT NULL DEFAULT 0,
+  PRIMARY KEY (id),
+  CONSTRAINT fk_campeonato_id
+    FOREIGN KEY (id)
+    REFERENCES campeonato (id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+);
