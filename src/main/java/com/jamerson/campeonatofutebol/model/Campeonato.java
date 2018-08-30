@@ -10,6 +10,7 @@ import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
 import java.util.Objects;
 
 @Entity
@@ -19,7 +20,6 @@ public class Campeonato implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
 
     @Column(name = "nome")
     @NotBlank(message = "O nome não pode ser nulo.")
