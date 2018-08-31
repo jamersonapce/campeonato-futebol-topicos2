@@ -41,7 +41,8 @@ public class Jogador {
     @JoinColumn(name = "fk_time")
     private Time time;
 
-    @OneToOne(mappedBy = "capitao", fetch=FetchType.LAZY, optional=false)
+    @OneToOne
+    @JoinColumn(name = "capitaoDoTime")
     private Time capitao;
 
     public Integer getId() {

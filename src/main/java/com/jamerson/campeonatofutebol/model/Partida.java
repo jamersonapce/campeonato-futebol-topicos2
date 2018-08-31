@@ -26,28 +26,28 @@ public class Partida {
     private LocalDate dataPartida;
 
     @JsonProperty("pontuação mandante")
-    @Column(name = "pontuacao_mandante")
+    @Column(name = "pontuacao_mandante", columnDefinition = "int default 0")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @PositiveOrZero(message = "A Pontuação não pode ser negativa.")
     private Integer pontuacaoMandante;
 
     @JsonProperty("pontuação visitante")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @Column(name = "pontuacao_visitante")
+    @Column(name = "pontuacao_visitante", columnDefinition = "int default 0")
     @PositiveOrZero(message = "A pontuação não pode ser negativa.")
     private Integer pontuacaoVisitante;
 
-    @NotEmpty(message = "Informe o Campeonato para partida")
+    @NotEmpty(message = "Campeonato é obrigatório.")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_campeonato")
     private Campeonato campeonato;
 
-    @NotEmpty(message = "Campo time é obrigatório.")
+    @NotEmpty(message = "Time visitante é obrigatório.")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_time_visitante")
     private Time timeVisitante;
 
-    @NotEmpty(message = "Campo time é obrigatório.")
+    @NotEmpty(message = "Time mandante é obrigatório.")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_time_mandante")
     private Time timeMandante;

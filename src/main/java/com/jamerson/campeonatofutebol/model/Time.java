@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -17,8 +18,9 @@ public class Time {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "nome")
+    @Column(name = "nome", unique = true)
     @NotEmpty(message = "Campo nome é obrigatório.")
+    @Size(max = 50, message = "Informe um nome com até 50 caracteres.")
     private String nome;
 
     @NotEmpty(message = "Campo estado obrigatório.")
@@ -45,9 +47,8 @@ public class Time {
     @JsonIgnore
     private List<Jogador> jogadores = new ArrayList<>();
 
-    @OneToOne
-    @JoinColumn(name = "capitao")
-    private Jogador capitao;
+    @OneToOne(mappedBy = "capitaoDoTime", fetch=FetchType.LAZY, optional=false)
+    private Jogador capitaoDoTime;
 
     public Integer getId() {
         return id;
@@ -101,12 +102,12 @@ public class Time {
         this.jogadores = jogadores;
     }
 
-    public Jogador getCapitao() {
-        return capitao;
+    public Jogador getCapitaoDoTime() {
+        return capitaoDoTime;
     }
 
-    public void setCapitao(Jogador capitao) {
-        this.capitao = capitao;
+    public void setCapitaoDoTime(Jogador capitaoDoTime) {
+        this.capitaoDoTime = capitaoDoTime;
     }
 
     @Override

@@ -36,8 +36,8 @@ public class Campeonato implements Serializable {
     @JsonIgnore
     private List<Partida> partidas = new ArrayList<>();
 
-    @ManyToMany
-    @JoinTable(name="campeonato_tem_times", joinColumns=
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name="campeonatos_times", joinColumns=
             {@JoinColumn(name="campeonato_id", referencedColumnName = "id")}, inverseJoinColumns=
             {@JoinColumn(name="time_id", referencedColumnName = "id")})
     @JsonIgnore
