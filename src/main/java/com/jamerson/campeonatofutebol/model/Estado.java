@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -18,9 +19,10 @@ public class Estado {
 
     @Column(name = "nome")
     @NotEmpty(message = "O nome é obrigatório.")
+    @Size(max = 50, message = "Informe um nome com até 50 caracteres.")
     private String nome;
 
-    @OneToMany(mappedBy = "estado", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "estado", cascade={CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.LAZY)
     @JsonIgnore
     private List<Time> times = new ArrayList<>();
 

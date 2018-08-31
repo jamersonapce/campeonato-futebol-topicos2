@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -19,6 +20,7 @@ public class Time {
 
     @Column(name = "nome")
     @NotEmpty(message = "Campo nome é obrigatório.")
+    @Size(max = 50, message = "Informe um nome com até 50 caracteres.")
     private String nome;
 
     @NotEmpty(message = "Campo estado obrigatório.")
@@ -41,12 +43,12 @@ public class Time {
     private List<Partida> partidasComoMandante = new ArrayList<>();
 
     @JsonProperty("jogadores")
-    @OneToMany(mappedBy = "time", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "time", cascade={CascadeType.PERSIST,CascadeType.MERGE}, fetch = FetchType.LAZY)
     @JsonIgnore
     private List<Jogador> jogadores = new ArrayList<>();
 
-    @OneToOne
-    @JoinColumn(name = "capitao")
+    @OneToOne(optional = false)
+    @JoinColumn(name = "capitao", unique=true, nullable=false, updatable=false)
     private Jogador capitao;
 
     public Integer getId() {
