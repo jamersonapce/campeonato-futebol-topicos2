@@ -1,8 +1,8 @@
 package com.jamerson.campeonatofutebol.controller;
 
 
-import com.jamerson.campeonatofutebol.model.Campeonato;
-import com.jamerson.campeonatofutebol.service.CampeonatoService;
+import com.jamerson.campeonatofutebol.model.Jogador;
+import com.jamerson.campeonatofutebol.service.JogadorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
@@ -16,47 +16,46 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @RestController
-@RequestMapping("/campeonato")
-public class CampeonatoController {
+@RequestMapping("/jogador")
+public class JogadorController {
 
-    private final CampeonatoService campeonatoService;
+    private JogadorService jogadorService;
 
     @Autowired
-    public CampeonatoController(CampeonatoService campeonatoService){
-        this.campeonatoService = campeonatoService;
+    public JogadorController(JogadorService jogadorService) {
+        this.jogadorService = jogadorService;
     }
 
     @PostMapping
-    public ResponseEntity<Void> salva(@Valid @RequestBody Campeonato campeonato){
-        Campeonato campeonatoSalvo = campeonatoService.salva(campeonato);
+    public ResponseEntity<Void> salva(@Valid @RequestBody Jogador jogador){
+        Jogador jogadorSalvo = jogadorService.salva(jogador);
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequestUri()
                 .path("/{id}")
-                .buildAndExpand(campeonatoSalvo.getId())
+                .buildAndExpand(jogadorSalvo.getId())
                 .toUri();
-
         return ResponseEntity.created(uri).build();
     }
 
     @GetMapping
     public ResponseEntity<?> lista(){
-        List<Campeonato> campeonatos = campeonatoService.listaCampeonatos();
-        if(campeonatos.isEmpty()){
+        List<Jogador> jogadores = jogadorService.listaJogadores();
+        if(jogadores.isEmpty()){
             return ResponseEntity.noContent().build();
         } else {
-            return ResponseEntity.ok(campeonatos);
+            return ResponseEntity.ok(jogadores);
         }
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> buscaPor(@PathVariable Integer id){
         CacheControl cacheControl = CacheControl.maxAge(20, TimeUnit.SECONDS);
-        return ResponseEntity.status(HttpStatus.OK).cacheControl(cacheControl).body(campeonatoService.buscaPor(id));
+        return ResponseEntity.status(HttpStatus.OK).cacheControl(cacheControl).body(jogadorService.buscaPor(id));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Campeonato> atualiza(@PathVariable Integer id, @Valid @RequestBody Campeonato campeonato){
-        Campeonato campeonatoResult = campeonatoService.atualiza(id, campeonato);
+    public ResponseEntity<Jogador> atualiza(@PathVariable Integer id, @Valid @RequestBody Jogador jogador){
+        Jogador campeonatoResult = jogadorService.atualiza(id, jogador);
         return  ResponseEntity.ok(campeonatoResult);
 
     }
@@ -64,6 +63,7 @@ public class CampeonatoController {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletar(@PathVariable Integer id){
-        campeonatoService.excluir(id);
+        jogadorService.excluir(id);
     }
+
 }

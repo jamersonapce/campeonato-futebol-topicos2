@@ -43,13 +43,13 @@ public class Time {
     private List<Partida> partidasComoMandante = new ArrayList<>();
 
     @JsonProperty("jogadores")
-    @OneToMany(mappedBy = "time", cascade={CascadeType.PERSIST,CascadeType.MERGE}, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "times", cascade={CascadeType.PERSIST,CascadeType.MERGE}, fetch = FetchType.LAZY)
     @JsonIgnore
-    private List<Jogador> jogadores = new ArrayList<>();
+    private List<Campeonato> jogadores = new ArrayList<>();
 
     @OneToOne(optional = false)
     @JoinColumn(name = "capitao", unique=true, nullable=false, updatable=false)
-    private Jogador capitao;
+    private Campeonato capitao;
 
     public Integer getId() {
         return id;
@@ -95,19 +95,19 @@ public class Time {
         this.partidasComoMandante = partidasComoMandante;
     }
 
-    public List<Jogador> getJogadores() {
+    public List<Campeonato> getJogadores() {
         return jogadores;
     }
 
-    public void setJogadores(List<Jogador> jogadores) {
+    public void setJogadores(List<Campeonato> jogadores) {
         this.jogadores = jogadores;
     }
 
-    public Jogador getCapitao() {
+    public Campeonato getCapitao() {
         return capitao;
     }
 
-    public void getCapitao(Jogador capitao) {
+    public void getCapitao(Campeonato capitao) {
         this.capitao = capitao;
     }
 
