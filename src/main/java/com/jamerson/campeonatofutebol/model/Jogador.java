@@ -1,7 +1,6 @@
 package com.jamerson.campeonatofutebol.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -18,15 +17,17 @@ public class Jogador {
 
     @Column(name = "nome")
     @NotEmpty(message = "O nome é obrigatório.")
+    @Size(max = 100, message = "Informe um nome com até 100 caracteres.")
     private String nome;
 
     @Column(name = "nascimento")
-    @NotNull(message = "A data de nascimento não pode ser nula.")
+    @NotNull(message = "A data de nascimento é obrigatória.")
     @Past
     private LocalDate nascimento;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @Column(name = "genero")
+    @Size(max = 50, message = "Informe um nome com até 50 caracteres.")
     private String genero;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -41,8 +42,8 @@ public class Jogador {
     @JoinColumn(name = "fk_time")
     private Time time;
 
-    @OneToOne
-    @JoinColumn(name = "capitaoDoTime")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @OneToOne(mappedBy = "capitao")
     private Time capitao;
 
     public Integer getId() {
