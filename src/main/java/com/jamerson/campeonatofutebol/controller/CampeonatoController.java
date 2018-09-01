@@ -28,7 +28,7 @@ public class CampeonatoController {
 
     @PostMapping
     public ResponseEntity<Void> salva(@Valid @RequestBody Campeonato campeonato){
-        Campeonato campeonatoSalvo = campeonatoService.salva(campeonato);
+        Campeonato campeonatoSalvo = this.campeonatoService.salva(campeonato);
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequestUri()
                 .path("/{id}")
@@ -40,7 +40,7 @@ public class CampeonatoController {
 
     @GetMapping
     public ResponseEntity<?> lista(){
-        List<Campeonato> campeonatos = campeonatoService.listaCampeonatos();
+        List<Campeonato> campeonatos = this.campeonatoService.listaCampeonatos();
         if(campeonatos.isEmpty()){
             return ResponseEntity.noContent().build();
         } else {
@@ -51,12 +51,12 @@ public class CampeonatoController {
     @GetMapping("/{id}")
     public ResponseEntity<?> buscaPor(@PathVariable Integer id){
         CacheControl cacheControl = CacheControl.maxAge(20, TimeUnit.SECONDS);
-        return ResponseEntity.status(HttpStatus.OK).cacheControl(cacheControl).body(campeonatoService.buscaPor(id));
+        return ResponseEntity.status(HttpStatus.OK).cacheControl(cacheControl).body(this.campeonatoService.buscaPor(id));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Campeonato> atualiza(@PathVariable Integer id, @Valid @RequestBody Campeonato campeonato){
-        Campeonato campeonatoResult = campeonatoService.atualiza(id, campeonato);
+        Campeonato campeonatoResult = this.campeonatoService.atualiza(campeonato, id);
         return  ResponseEntity.ok(campeonatoResult);
 
     }
@@ -64,6 +64,6 @@ public class CampeonatoController {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletar(@PathVariable Integer id){
-        campeonatoService.excluir(id);
+        this.campeonatoService.excluir(id);
     }
 }

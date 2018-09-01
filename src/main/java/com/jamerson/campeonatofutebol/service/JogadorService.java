@@ -2,9 +2,8 @@ package com.jamerson.campeonatofutebol.service;
 
 import com.jamerson.campeonatofutebol.model.Jogador;
 import com.jamerson.campeonatofutebol.repository.JogadorRepository;
-import org.springframework.beans.BeanUtils;
+import com.jamerson.campeonatofutebol.service.generics.GenericoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,43 +13,34 @@ import java.util.Optional;
 @Service
 public class JogadorService {
 
-    private final JogadorRepository jogadorRepository;
-
+    private final GenericoService<Jogador> genericoService;
     @Autowired
     public JogadorService(JogadorRepository jogadorRepository) {
-        this.jogadorRepository = jogadorRepository;
+        this.genericoService = new GenericoService<Jogador>(jogadorRepository);
     }
 
     @Transactional(readOnly = true)
     public List<Jogador> listaJogadores(){
-        return this.jogadorRepository.findAll();
+        return this.genericoService.listaEntities();
     }
 
     @Transactional
     public Jogador salva(Jogador jogador){
-        return this.jogadorRepository.save(jogador);
+        return this.genericoService.salva(jogador);
     }
 
     @Transactional(readOnly = true)
     public Optional<Jogador> buscaPor(Integer id){
-        Optional<Jogador> jogador = jogadorRepository.findById(id);
-        return Optional.ofNullable(jogador.orElseThrow(() -> new EmptyResultDataAccessException(1))) ;
+        return this.genericoService.buscaPor(id );
     }
 
     @Transactional
-    public Jogador atualiza(Integer id, Jogador jogador){
-        Optional<Jogador> jogadorRetornado = this.buscaPor(id);
-        BeanUtils.copyProperties(jogador, jogadorRetornado, "id");
-        this.salva(jogadorRetornado.get());
-        return jogadorRetornado.get();
+    public Jogador atualiza(Jogador jogador, Integer id){
+        return this.genericoService.atualiza(jogador, id);
     }
 
     @Transactional
     public void excluir(Integer id) {
-        try {
-            jogadorRepository.deleteById(id);
-        } catch (EmptyResultDataAccessException e) {
-            throw new EmptyResultDataAccessException(1);
-        }
+        this.genericoService.excluir(id);
     }
 }

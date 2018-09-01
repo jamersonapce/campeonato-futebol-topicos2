@@ -61,6 +61,14 @@ public class Partida {
         this.campeonato = campeonato;
     }
 
+    public Integer getId() {
+        return Id;
+    }
+
+    public void setId(Integer id) {
+        Id = id;
+    }
+
     public LocalDate getDataPartida() {
         return dataPartida;
     }

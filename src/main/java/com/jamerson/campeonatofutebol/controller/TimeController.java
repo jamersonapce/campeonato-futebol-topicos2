@@ -1,8 +1,7 @@
 package com.jamerson.campeonatofutebol.controller;
 
-
-import com.jamerson.campeonatofutebol.model.Jogador;
-import com.jamerson.campeonatofutebol.service.JogadorService;
+import com.jamerson.campeonatofutebol.model.Time;
+import com.jamerson.campeonatofutebol.service.TimeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
@@ -16,54 +15,52 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @RestController
-@RequestMapping("/jogador")
-public class JogadorController {
+@RequestMapping("/time")
+public class TimeController {
 
-    private JogadorService jogadorService;
+    private final TimeService timeService;
 
     @Autowired
-    public JogadorController(JogadorService jogadorService) {
-        this.jogadorService = jogadorService;
+    public TimeController(TimeService timeService){
+        this.timeService = timeService;
     }
 
     @PostMapping
-    public ResponseEntity<Void> salva(@Valid @RequestBody Jogador jogador){
-        Jogador jogadorSalvo = jogadorService.salva(jogador);
+    public ResponseEntity<Void> salva(@Valid @RequestBody Time time){
+        Time timeSalvo = this.timeService.salva(time);
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequestUri()
                 .path("/{id}")
-                .buildAndExpand(jogadorSalvo.getId())
+                .buildAndExpand(timeSalvo.getId())
                 .toUri();
         return ResponseEntity.created(uri).build();
     }
 
     @GetMapping
     public ResponseEntity<?> lista(){
-        List<Jogador> jogadores = jogadorService.listaJogadores();
-        if(jogadores.isEmpty()){
+        List<Time> times = this.timeService.lista();
+        if(times.isEmpty()){
             return ResponseEntity.noContent().build();
         } else {
-            return ResponseEntity.ok(jogadores);
+            return ResponseEntity.ok(times);
         }
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> buscaPor(@PathVariable Integer id){
+    public ResponseEntity buscaPor(@PathVariable Integer id){
         CacheControl cacheControl = CacheControl.maxAge(20, TimeUnit.SECONDS);
-        return ResponseEntity.status(HttpStatus.OK).cacheControl(cacheControl).body(jogadorService.buscaPor(id));
+        return ResponseEntity.status(HttpStatus.OK).cacheControl(cacheControl).body(this.timeService.buscaPro(id));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Jogador> atualiza(@PathVariable Integer id, @Valid @RequestBody Jogador jogador){
-        Jogador campeonatoResult = jogadorService.atualiza(jogador, id);
-        return  ResponseEntity.ok(campeonatoResult);
-
+    public ResponseEntity<Time> atualiza(@PathVariable Integer id, @Valid @RequestBody Time time){
+        Time timeResult = this.timeService.atualiza(time, id);
+        return ResponseEntity.ok(timeResult);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletar(@PathVariable Integer id){
-        jogadorService.excluir(id);
+        this.timeService.excluir(id);
     }
-
 }
