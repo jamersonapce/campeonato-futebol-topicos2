@@ -63,7 +63,7 @@ public class CampeonatoFutebolExceptionHandler  extends ResponseEntityExceptionH
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
                                                                   HttpHeaders headers, HttpStatus status, WebRequest request) {
         List<Erro> erros = criarListaDeErros(ex.getBindingResult());
-        return super.handleExceptionInternal(ex, erros, headers, status, request);
+        return super.handleExceptionInternal(ex, erros, headers, status.BAD_REQUEST, request);
     }
 
 
