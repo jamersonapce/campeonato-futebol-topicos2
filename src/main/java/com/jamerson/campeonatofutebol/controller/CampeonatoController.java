@@ -2,8 +2,11 @@ package com.jamerson.campeonatofutebol.controller;
 
 
 import com.jamerson.campeonatofutebol.model.Campeonato;
+import com.jamerson.campeonatofutebol.repository.filter.CampeonatoFilter;
 import com.jamerson.campeonatofutebol.service.CampeonatoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -66,4 +69,20 @@ public class CampeonatoController {
     public void deletar(@PathVariable Integer id){
         this.campeonatoService.excluir(id);
     }
+
+    @GetMapping("/filter")
+    public ResponseEntity<?> pesquisa(CampeonatoFilter filter){
+        List<Campeonato> CampeonatosFilter = this.campeonatoService.pesquisa(filter);
+        if(CampeonatosFilter.isEmpty()){
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.ok(CampeonatosFilter);
+        }
+    }
+
+    @GetMapping("/filter/page")
+    public Page<Campeonato> pesquisarComPaginacao(CampeonatoFilter filter, Pageable pageable) {
+        return this.campeonatoService.pesquisa(filter, pageable);
+    }
+
 }

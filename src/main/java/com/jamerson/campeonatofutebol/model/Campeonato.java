@@ -26,7 +26,6 @@ public class Campeonato implements Serializable {
     @Size(max = 50, message = "Informe um nome com até 50 caracteres.")
     private String nome;
 
-
     @Column(name = "ano")
     @NotNull(message = "O ano não pode ser nulo.")
     @Positive (message = "O ano não pode ser negativo.")
