@@ -1,6 +1,7 @@
 package com.jamerson.campeonatofutebol.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -11,6 +12,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "estado")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Estado {
 
     @Id

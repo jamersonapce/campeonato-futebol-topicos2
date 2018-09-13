@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS time (
   id INT(11) NOT NULL AUTO_INCREMENT,
   nome VARCHAR(50) NOT NULL,
   fk_estado INT(11) NULL,
-  capitao INT(11) NOT NULL,
+  capitao INT(11) NULL,
   PRIMARY KEY (id),
   UNIQUE INDEX nome_UNIQUE (nome ASC),
   INDEX fk_time_estado_idx (fk_estado ASC),

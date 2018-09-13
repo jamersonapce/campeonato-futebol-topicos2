@@ -1,0 +1,1 @@
+INSERT INTO time (nome, fk_estado) VALUES ('Flamengo', 1), ('Santos', 2), ('Sampaio', 3);

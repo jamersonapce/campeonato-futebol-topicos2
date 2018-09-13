@@ -1,0 +1,1 @@
+INSERT INTO estado (nome) VALUES ('Rio de Janeiro'), ('São Paulo'), ('Maranhão');

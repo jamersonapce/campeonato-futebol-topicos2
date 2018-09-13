@@ -1,6 +1,8 @@
 package com.jamerson.campeonatofutebol.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -9,6 +11,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "jogador")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Jogador {
 
     @Id
@@ -37,11 +40,13 @@ public class Jogador {
     @Digits(integer = 1, fraction = 2)
     private double altura;
 
+    @JsonManagedReference
     @NotEmpty(message = "O time é obrigatório.")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_time")
     private Time time;
 
+    @JsonManagedReference
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @OneToOne(mappedBy = "capitao")
     private Time capitao;

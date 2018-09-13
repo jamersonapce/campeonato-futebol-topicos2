@@ -1,6 +1,8 @@
 package com.jamerson.campeonatofutebol.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
@@ -12,6 +14,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "time")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Time {
 
     @Id
@@ -44,11 +47,12 @@ public class Time {
 
     @JsonProperty("jogadores")
     @OneToMany(mappedBy = "times", cascade={CascadeType.PERSIST,CascadeType.MERGE}, fetch = FetchType.LAZY)
-    @JsonIgnore
+    @JsonBackReference
     private List<Campeonato> jogadores = new ArrayList<>();
 
-    @OneToOne(optional = false)
-    @JoinColumn(name = "capitao", unique=true, nullable=false, updatable=false)
+    @JsonBackReference
+    @OneToOne
+    @JoinColumn(name = "capitao", unique=true, updatable=false)
     private Campeonato capitao;
 
     public Integer getId() {
